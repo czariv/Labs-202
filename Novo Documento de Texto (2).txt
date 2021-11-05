@@ -1,0 +1,39 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+void achador(int** mat,int n,int b,int* menor,int* seg, int a,int prof){
+    for(int i=0;i<n;i++){
+        if(mat[a][i]){
+            if(i==b){
+                if(prof+mat[a][i]<*menor||*menor==0){
+                    *seg=*menor;
+                    *menor=prof+mat[a][i];
+                }
+                else if(prof+mat[a][i]<*seg||*seg==0){
+                    *seg=prof+mat[a][i];
+                }
+            }
+        }
+        else{
+            achador(mat,n,b,menor,seg,i,mat[a][i]+prof);
+        }
+    }
+}
+int main(){
+    int n,m,i,j,t;
+    scanf("%d %d",&n,&m);
+    int** matriz=(int**)malloc(sizeof(int*)*n);
+    for(int h=0;h<n;h++){
+        matriz[h]=(int*)malloc(sizeof(int)*n);
+    }
+    for(int h=0;h<m;h++){
+        scanf("%d %d %d",&i,&j,&t);
+        matriz[i][j]=t;
+        matriz[j][i]=t;
+    }
+    int *result=(int*)malloc(sizeof(int)*2);
+    int *menor,*segundo;
+    *menor=0;*segundo=0;
+    achador(matriz,n,n-1,menor,segundo,0,0);
+    printf("%d",*segundo);
+}
